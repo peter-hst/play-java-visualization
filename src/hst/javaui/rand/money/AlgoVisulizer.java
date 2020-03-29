@@ -10,7 +10,7 @@ import java.util.Arrays;
  * 控制层
  */
 public class AlgoVisulizer {
-    public static int DELAY = 10;
+    public static int DELAY = 40;  // 1000 / 40 = 25帧
 
     //    TODO 创建自己的数据
     private int[] money; // 数据
@@ -34,14 +34,20 @@ public class AlgoVisulizer {
     //    动画逻辑
     private void run() {
         while (true) {
+//            排序渲染
             Arrays.sort(money);
             frame.render(money);
-            AlgoVisHelper.pause(DELAY); // 1000 / 40 = 25帧
-            for (int i = 0; i < money.length; i++) {
-                if (money[i] > 0) { // 保证有钱
+            AlgoVisHelper.pause(DELAY);
+
+//            为了加速效果, 设置为每50轮迭代, 渲染一次界面
+            for (int k = 0; k < 50; k++) {
+                for (int i = 0; i < money.length; i++) {
+//                    为了公平,去掉没有钱的人,可以为负债
+//                    if (money[i] > 0) { // 保证有钱
                     int j = (int) (Math.random() * money.length);
                     money[i] -= 1;
                     money[j] += 1;
+//                    }
                 }
             }
         }
